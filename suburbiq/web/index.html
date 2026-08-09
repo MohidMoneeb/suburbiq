@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SuburbIQ</title>
+<style>
+:root{--accent:#f4b41a;--ink:#12141a;--muted:#6b7280;--surface:#fff;--bg:#f6f7f9;
+--line:#e5e7eb;--pos:#16a34a;--warn:#dc2626;}
+@media (prefers-color-scheme:dark){:root{--ink:#e8eaed;--muted:#9aa1ab;--surface:#171a21;
+--bg:#0e1015;--line:#262b35;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,
+BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums;}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 20px 72px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1{margin:0;font-size:26px;letter-spacing:-.02em}
+h1 span{color:var(--accent)}
+.meta{color:var(--muted);font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin:18px 0}
+label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;
+color:var(--muted);margin-bottom:5px}
+select,input,button{padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit}
+button{cursor:pointer;font-weight:600}
+button.primary{background:var(--accent);border-color:var(--accent);color:#12141a}
+button:disabled{opacity:.5;cursor:not-allowed}
+.verdict{margin:0 0 18px;border-left:4px solid var(--accent)}
+.verdict .lead{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.verdict .lead em{color:var(--accent);font-style:normal}
+.verdict p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi .n{font-size:28px;font-weight:700;letter-spacing:-.02em}
+.kpi .l{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:2px}
+.kpi .c{font-size:12px;color:var(--muted);margin-top:5px}
+h2{font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.row{display:grid;grid-template-columns:150px 1fr 52px;align-items:center;gap:10px;
+margin-bottom:9px;font-size:14px}
+.row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.row .nm:hover{color:var(--accent)}
+.track{background:var(--line);border-radius:5px;height:12px;overflow:hidden}
+.fill{height:100%;background:var(--accent);border-radius:5px}
+.fill.mut{background:var(--muted);opacity:.55}
+.val{text-align:right;font-size:13px;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+color:var(--muted);border-bottom:1px solid var(--line);padding:7px 8px;white-space:nowrap}
+td{padding:8px;border-bottom:1px solid var(--line)}
+td a{color:var(--accent)}
+.none{color:var(--muted)}
+.pill{display:inline-block;min-width:34px;text-align:center;padding:2px 7px;
+border-radius:999px;font-size:12px;font-weight:600}
+.hi{background:rgba(220,38,38,.14);color:var(--warn)}
+.md{background:rgba(244,180,26,.18);color:#a97a06}
+.lo{background:rgba(22,163,74,.14);color:var(--pos)}
+@media (prefers-color-scheme:dark){.md{color:var(--accent)}}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.bar input[type=text]{flex:1;min-width:180px}
+.note{padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.note.err{background:rgba(220,38,38,.12);color:var(--warn)}
+.note.ok{background:rgba(22,163,74,.12);color:var(--pos)}
+.note.info{background:rgba(244,180,26,.14)}
+.hide{display:none}
+footer{margin-top:28px;color:var(--muted);font-size:12px;line-height:1.7}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--muted);
+border-top-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-2px}
+@keyframes s{to{transform:rotate(360deg)}}
+@media(max-width:999px){.kpis{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}}
+@media(max-width:639px){.kpis{grid-template-columns:1fr}.row{grid-template-columns:100px 1fr 46px}}
+</style>
+</head>
+<body><div class="wrap">
+
+<header>
+  <div><h1>Suburb<span>IQ</span></h1>
+    <div class="meta" id="sub">Market intelligence for Australian local business</div></div>
+  <div class="meta" id="prov"></div>
+</header>
+
+<div class="controls">
+  <div><label for="cat">Category</label><select id="cat"></select></div>
+  <div><label for="area">Area</label><select id="area"></select></div>
+  <div><label for="src">Source</label><select id="src"></select></div>
+  <div><button id="load">Load</button></div>
+  <div><button id="ingest" class="primary">Scrape now</button></div>
+  <div><button id="csv">Export CSV</button></div>
+</div>
+
+<div id="msg"></div>
+
+<div id="dash" class="hide">
+  <div class="card verdict" id="verdict"></div>
+  <section class="kpis" id="kpis"></section>
+  <div class="card" style="margin-bottom:16px">
+    <h2>Opportunity Index — best suburbs to enter</h2>
+    <div id="opp"></div>
+    <div class="meta" style="margin-top:10px">Supply-side proxy: low competitor count (60%)
+      + weak incumbent digital presence (40%). Click a suburb to filter the table.</div>
+  </div>
+  <div class="cols">
+    <div class="card"><h2>Saturation — businesses per suburb</h2><div id="sat"></div></div>
+    <div class="card"><h2>Digital gap distribution</h2><div id="hist"></div>
+      <div class="meta">Amber = gap ≥ 50 (agency target zone)</div></div>
+  </div>
+  <div class="card">
+    <h2>Leads — ranked by digital gap</h2>
+    <div class="bar">
+      <input type="text" id="q" placeholder="Search business or suburb…">
+      <select id="gap">
+        <option value="0">All gap scores</option>
+        <option value="40">Gap ≥ 40</option>
+        <option value="60">Gap ≥ 60</option>
+        <option value="100">No online presence at all (100)</option>
+      </select>
+      <span class="meta" id="cnt"></span>
+      <button id="clr">Clear filters</button>
+    </div>
+    <div class="tablewrap"><table id="tbl">
+      <thead><tr><th>Business</th><th>Suburb</th><th>Phone</th><th>Website</th>
+      <th>Hours</th><th>Gap</th></tr></thead><tbody></tbody></table></div>
+    <div class="bar" style="margin-top:12px">
+      <button id="prev">← Prev</button><button id="next">Next →</button>
+      <span class="meta" id="pg"></span>
+    </div>
+  </div>
+</div>
+
+<footer id="foot"></footer>
+
+</div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cell = v => (v && String(v).trim()) ? esc(v) : '<span class="none">—</span>';
+const pill = g => `<span class="pill ${g>=60?'hi':g>=30?'md':'lo'}">${g}</span>`;
+let state = { offset:0, limit:50, suburb:'', total:0 };
+
+function msg(text, kind='info'){
+  $('#msg').innerHTML = text ? `<div class="note ${kind}">${text}</div>` : '';
+}
+
+async function jget(url){
+  const r = await fetch(url);
+  if(!r.ok){ throw new Error((await r.json().catch(()=>({detail:r.statusText}))).detail); }
+  return r.json();
+}
+
+function bars(items, key, valKey, clickable){
+  if(!items.length) return '<p class="meta">No data.</p>';
+  const top = Math.max(...items.map(i=>i[valKey])) || 1;
+  return items.map((it,n)=>`<div class="row">
+    <span class="nm" ${clickable?`data-sub="${esc(it[key])}"`:''} title="${esc(it[key])}">${esc(it[key])}</span>
+    <div class="track"><div class="${n===0?'fill':'fill mut'}" style="width:${100*it[valKey]/top}%"></div></div>
+    <span class="val">${it[valKey]}</span></div>`).join('');
+}
+
+function histogram(h){
+  const top = Math.max(...h.map(b=>b.count)) || 1, w=26, gap=9;
+  const rects = h.map((b,i)=>{
+    const bh = Math.max(2, 118*b.count/top), x = 8+i*(w+gap);
+    const col = b.lo>=50 ? '#f4b41a' : '#6b7280', op = b.lo>=50 ? 1 : .5;
+    return `<rect x="${x}" y="${130-bh}" width="${w}" height="${bh}" fill="${col}" opacity="${op}">
+      <title>gap ${b.lo}-${b.hi}: ${b.count} businesses</title></rect>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${8+h.length*(w+gap)} 150" width="100%" height="150" role="img">
+    <title>Digital gap distribution</title>${rects}
+    <line x1="4" y1="131" x2="${4+h.length*(w+gap)}" y2="131" stroke="#6b7280" opacity=".4"/></svg>`;
+}
+
+async function loadDash(){
+  const cat = $('#cat').value, src = $('#src').value;
+  msg('<span class="spin"></span> Loading analytics…');
+  try{
+    const d = await jget(`/api/analytics?category=${cat}&source=${src}`);
+    const c = d.coverage;
+    $('#dash').classList.remove('hide');
+    $('#prov').textContent = `${d.source} · ingested ${d.generated.replace('T',' ').replace('+00:00','')} UTC`;
+
+    const o = d.opportunity[0];
+    $('#verdict').innerHTML = o
+      ? `<div class="lead">Best opportunity: <em>${esc(o.suburb)}</em> — ${o.count} ${esc(cat)} businesses, average digital gap ${o.avg_gap}/100.</div>
+         <p>Few incumbents, and those present are weakly represented online. Ranked 1st of ${d.opportunity.length} suburbs.</p>`
+      : `<div class="lead">Not enough data to rank suburbs.</div><p>No suburb met the minimum business count.</p>`;
+
+    $('#kpis').innerHTML = [
+      [c.total.toLocaleString(), 'Businesses', `across ${c.suburbs} suburbs`],
+      [c.avg_gap, 'Avg digital gap', '0 = complete, 100 = absent'],
+      [c.pct_no_website+'%', 'No website', `${(c.total-c.with_website).toLocaleString()} businesses`],
+      [c.pct_no_phone+'%', 'No phone listed', `${(c.total-c.with_phone).toLocaleString()} businesses`],
+    ].map(([n,l,s])=>`<div class="card kpi"><div class="n">${n}</div><div class="l">${l}</div><div class="c">${s}</div></div>`).join('');
+
+    $('#opp').innerHTML = bars(d.opportunity.slice(0,12), 'suburb', 'index', true);
+    $('#sat').innerHTML = bars(d.saturation.slice(0,12), 'suburb', 'count', true);
+    $('#hist').innerHTML = histogram(d.histogram);
+    $('#foot').innerHTML = `<strong>Provenance:</strong> ${esc(d.source)} · ${c.total.toLocaleString()} records ·
+      ingested ${esc(d.generated)}<br>Business data © OpenStreetMap contributors, licensed under ODbL.<br>
+      Field coverage — phone ${c.with_phone.toLocaleString()} · website ${c.with_website.toLocaleString()} ·
+      hours ${c.with_hours.toLocaleString()} · street ${c.with_street.toLocaleString()}`;
+
+    document.querySelectorAll('.nm[data-sub]').forEach(el=>el.onclick=()=>{
+      state.suburb = el.dataset.sub; state.offset = 0; $('#q').value=''; loadTable();
+    });
+
+    msg('');
+    state.offset = 0; state.suburb=''; await loadTable();
+  }catch(e){ msg(`No data loaded: ${esc(e.message)} — pick a category and press <b>Scrape now</b>.`, 'err'); $('#dash').classList.add('hide'); }
+}
+
+async function loadTable(){
+  const cat = $('#cat').value, src = $('#src').value;
+  const p = new URLSearchParams({category:cat, source:src, q:$('#q').value,
+    min_gap:$('#gap').value, suburb:state.suburb, limit:state.limit, offset:state.offset});
+  const d = await jget('/api/businesses?'+p);
+  state.total = d.total;
+  $('#tbl tbody').innerHTML = d.items.map(b=>`<tr>
+    <td>${esc(b.name)}</td><td>${esc(b.suburb)}</td><td>${cell(b.phone)}</td>
+    <td>${b.website?`<a href="${esc(b.website)}" target="_blank" rel="noopener">link</a>`:'<span class="none">—</span>'}</td>
+    <td>${cell(b.opening_hours)}</td><td>${pill(b.gap)}</td></tr>`).join('')
+    || '<tr><td colspan="6" class="none">No matches.</td></tr>';
+  $('#cnt').textContent = `${d.total.toLocaleString()} match${d.total===1?'':'es'}` + (state.suburb?` in ${state.suburb}`:'');
+  $('#pg').textContent = d.total ? `${state.offset+1}–${Math.min(state.offset+state.limit, d.total)} of ${d.total.toLocaleString()}` : '';
+  $('#prev').disabled = state.offset===0;
+  $('#next').disabled = state.offset+state.limit >= d.total;
+}
+
+async function doIngest(){
+  const cat=$('#cat').value, area=$('#area').value, src=$('#src').value;
+  $('#ingest').disabled = true;
+  msg(`<span class="spin"></span> Scraping ${esc(cat)} in ${esc(area)} from ${esc(src)}… this can take a few minutes on a cold cache.`);
+  try{
+    const {job_id} = await (await fetch(`/api/ingest?category=${cat}&area=${area}&source=${src}`,{method:'POST'})).json();
+    while(true){
+      await new Promise(r=>setTimeout(r,1500));
+      const j = await jget('/api/ingest/'+job_id);
+      if(j.status==='done'){ msg(`Done — ${esc(j.message)}.`,'ok'); await loadDash(); break; }
+      if(j.status==='blocked'){ msg(`<b>Source blocked.</b> ${esc(j.message)}<br><br>${esc(j.remediation||'')}`,'err'); break; }
+      if(j.status==='error'){ msg(`Failed: ${esc(j.message)}`,'err'); break; }
+      msg(`<span class="spin"></span> ${esc(j.status)} — ${esc(j.message)}`);
+    }
+  }catch(e){ msg('Ingest failed: '+esc(e.message),'err'); }
+  $('#ingest').disabled = false;
+}
+
+(async function init(){
+  const m = await jget('/api/meta');
+  $('#cat').innerHTML = m.categories.map(c=>`<option>${c}</option>`).join('');
+  $('#area').innerHTML = m.areas.map(a=>`<option value="${a.slug}">${esc(a.label)}</option>`).join('');
+  $('#src').innerHTML = `<option value="">any</option>` + m.sources.map(s=>`<option>${s}</option>`).join('');
+  if(m.loaded.length){ $('#cat').value = m.loaded[0].category; await loadDash(); }
+  else msg('Nothing scraped yet — pick a category and press <b>Scrape now</b>.');
+
+  $('#load').onclick = loadDash;
+  $('#ingest').onclick = doIngest;
+  $('#csv').onclick = ()=>location.href=`/api/export.csv?category=${$('#cat').value}&min_gap=${$('#gap').value}&source=${$('#src').value}`;
+  let t; $('#q').oninput = ()=>{ clearTimeout(t); t=setTimeout(()=>{state.offset=0;state.suburb='';loadTable();},250); };
+  $('#gap').onchange = ()=>{ state.offset=0; loadTable(); };
+  $('#clr').onclick = ()=>{ $('#q').value=''; $('#gap').value='0'; state.suburb=''; state.offset=0; loadTable(); };
+  $('#prev').onclick = ()=>{ state.offset=Math.max(0,state.offset-state.limit); loadTable(); };
+  $('#next').onclick = ()=>{ state.offset+=state.limit; loadTable(); };
+})();
+</script>
+</body></html>

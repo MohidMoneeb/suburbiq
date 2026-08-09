@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SuburbIQ — Mockup (placeholder data)</title>
+<style>
+:root{
+  --accent:#f4b41a; --ink:#12141a; --muted:#6b7280; --surface:#fff;
+  --bg:#f6f7f9; --line:#e5e7eb; --pos:#16a34a; --warn:#dc2626;
+}
+@media (prefers-color-scheme:dark){
+  :root{--ink:#e8eaed;--muted:#9aa1ab;--surface:#171a21;--bg:#0e1015;--line:#262b35;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-variant-numeric:tabular-nums;}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 64px}
+.mockbar{background:var(--warn);color:#fff;text-align:center;padding:7px;
+  font-size:13px;font-weight:600;letter-spacing:.02em}
+header h1{margin:18px 0 4px;font-size:26px;letter-spacing:-.02em}
+header h1 span{color:var(--accent)}
+.meta{color:var(--muted);font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.verdict{margin:22px 0 18px;border-left:4px solid var(--accent)}
+.verdict .lead{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.verdict .lead em{color:var(--accent);font-style:normal}
+.verdict p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
+.kpi .n{font-size:28px;font-weight:700;letter-spacing:-.02em}
+.kpi .l{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:2px}
+.kpi .c{font-size:12px;color:var(--muted);margin-top:5px}
+h2{font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.row{display:grid;grid-template-columns:130px 1fr 46px;align-items:center;gap:10px;margin-bottom:9px;font-size:14px}
+.track{background:var(--line);border-radius:5px;height:12px;overflow:hidden}
+.fill{height:100%;background:var(--accent);border-radius:5px}
+.fill.mut{background:var(--muted);opacity:.55}
+.val{text-align:right;font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--muted);border-bottom:1px solid var(--line);padding:7px 8px}
+td{padding:8px;border-bottom:1px solid var(--line)}
+.none{color:var(--muted)}
+.pill{display:inline-block;min-width:34px;text-align:center;padding:2px 7px;
+  border-radius:999px;font-size:12px;font-weight:600}
+.hi{background:rgba(220,38,38,.14);color:var(--warn)}
+.lo{background:rgba(22,163,74,.14);color:var(--pos)}
+input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);margin-bottom:10px;font-size:14px}
+footer{margin-top:32px;color:var(--muted);font-size:12px;line-height:1.7}
+@media(max-width:999px){.kpis{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}}
+@media(max-width:639px){.kpis{grid-template-columns:1fr}.row{grid-template-columns:96px 1fr 42px}}
+</style>
+</head>
+<body>
+<div class="mockbar">UX MOCKUP — placeholder numbers, not real scraped data</div>
+<div class="wrap">
+
+<header>
+  <h1>Suburb<span>IQ</span></h1>
+  <div class="meta">Cafés · Greater Sydney · ingested 2026-08-05 14:22 · source: OpenStreetMap</div>
+</header>
+
+<div class="card verdict">
+  <div class="lead">Best opportunity: <em>Wentworthville</em> — 6 cafés, average digital gap 71/100.</div>
+  <p>Few incumbents, and those present are weakly represented online. Ranked 1st of 38 suburbs on the Opportunity Index.</p>
+</div>
+
+<section class="kpis">
+  <div class="card kpi"><div class="n">2,791</div><div class="l">Businesses</div><div class="c">across 38 suburbs</div></div>
+  <div class="card kpi"><div class="n">58</div><div class="l">Avg digital gap</div><div class="c">0 = complete, 100 = absent</div></div>
+  <div class="card kpi"><div class="n">79%</div><div class="l">No website</div><div class="c">2,209 businesses</div></div>
+  <div class="card kpi"><div class="n">87%</div><div class="l">No phone listed</div><div class="c">2,440 businesses</div></div>
+</section>
+
+<div class="card">
+  <h2>Opportunity Index — best suburbs to enter</h2>
+  <div class="row"><span>Wentworthville</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">100</span></div>
+  <div class="row"><span>Guildford</span><div class="track"><div class="fill mut" style="width:91%"></div></div><span class="val">91</span></div>
+  <div class="row"><span>Merrylands</span><div class="track"><div class="fill mut" style="width:84%"></div></div><span class="val">84</span></div>
+  <div class="row"><span>Rooty Hill</span><div class="track"><div class="fill mut" style="width:78%"></div></div><span class="val">78</span></div>
+  <div class="row"><span>Casula</span><div class="track"><div class="fill mut" style="width:69%"></div></div><span class="val">69</span></div>
+</div>
+
+<div class="cols">
+  <div class="card">
+    <h2>Saturation — cafés per suburb</h2>
+    <div class="row"><span>Parramatta</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="val">27</span></div>
+    <div class="row"><span>Newtown</span><div class="track"><div class="fill mut" style="width:52%"></div></div><span class="val">14</span></div>
+    <div class="row"><span>Marrickville</span><div class="track"><div class="fill mut" style="width:37%"></div></div><span class="val">10</span></div>
+    <div class="row"><span>Redfern</span><div class="track"><div class="fill mut" style="width:30%"></div></div><span class="val">8</span></div>
+    <div class="row"><span>Surry Hills</span><div class="track"><div class="fill mut" style="width:30%"></div></div><span class="val">8</span></div>
+  </div>
+  <div class="card">
+    <h2>Digital gap distribution</h2>
+    <svg viewBox="0 0 300 150" width="100%" height="150" role="img">
+      <title>Histogram of digital gap scores; higher buckets are the opportunity zone</title>
+      <rect x="10"  y="120" width="26" height="22" fill="#6b7280" opacity=".5"/>
+      <rect x="45"  y="104" width="26" height="38" fill="#6b7280" opacity=".5"/>
+      <rect x="80"  y="88"  width="26" height="54" fill="#6b7280" opacity=".5"/>
+      <rect x="115" y="66"  width="26" height="76" fill="#6b7280" opacity=".5"/>
+      <rect x="150" y="40"  width="26" height="102" fill="#f4b41a"/>
+      <rect x="185" y="22"  width="26" height="120" fill="#f4b41a"/>
+      <rect x="220" y="52"  width="26" height="90" fill="#f4b41a"/>
+      <rect x="255" y="96"  width="26" height="46" fill="#f4b41a"/>
+      <line x1="6" y1="142" x2="294" y2="142" stroke="#6b7280" stroke-width="1" opacity=".4"/>
+    </svg>
+    <div class="meta">Amber = gap ≥ 50 (agency target zone)</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:16px">
+  <h2>Leads — ranked by digital gap</h2>
+  <input placeholder="Filter by business or suburb…">
+  <table>
+    <thead><tr><th>Business</th><th>Suburb</th><th>Phone</th><th>Website</th><th>Hours</th><th>Gap</th></tr></thead>
+    <tbody>
+      <tr><td>Corner Bean</td><td>Wentworthville</td><td class="none">—</td><td class="none">—</td><td class="none">—</td><td><span class="pill hi">100</span></td></tr>
+      <tr><td>Espresso Lane</td><td>Guildford</td><td>02 9632 1188</td><td class="none">—</td><td class="none">—</td><td><span class="pill hi">75</span></td></tr>
+      <tr><td>The Daily Grind</td><td>Merrylands</td><td class="none">—</td><td class="none">—</td><td>Mo-Fr 07:00-15:00</td><td><span class="pill hi">65</span></td></tr>
+      <tr><td>Little Marrick</td><td>Marrickville</td><td>02 9558 4412</td><td class="none">—</td><td>Mo-Su 06:30-16:00</td><td><span class="pill hi">55</span></td></tr>
+      <tr><td>Single Origin</td><td>Surry Hills</td><td>02 9211 0665</td><td>singleorigin.com.au</td><td>Mo-Fr 07:00-16:00</td><td><span class="pill lo">0</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <strong>Provenance:</strong> OpenStreetMap via Overpass API · ingested 2026-08-05 14:22 · 2,791 records<br>
+  Business data © OpenStreetMap contributors, licensed under the Open Database Licence (ODbL).<br>
+  <em>This file is a UX mockup. All numbers above are placeholders.</em>
+</footer>
+
+</div>
+</body>
+</html>

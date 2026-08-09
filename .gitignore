@@ -1,0 +1,16 @@
+# Scraped data and HTTP cache — regenerate with `suburbiq ingest`
+data/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
