@@ -86,6 +86,28 @@ Or skip the web app entirely and get a standalone HTML report:
 python -m suburbiq.cli report --category cafe --area sydney
 ```
 
+## Putting it online
+
+There's a `render.yaml` in the repo, so deploying is mostly clicking:
+
+1. Go to [render.com](https://render.com) and sign in with GitHub
+2. **New → Blueprint**, pick this repo, **Apply**
+
+A few minutes later you have a public `https://…onrender.com` URL. The blueprint sets
+`HOST=0.0.0.0` for you, and the free plan doesn't ask for a card.
+
+It won't come up empty: `seed/suburbiq-seed.db` holds a real Sydney ingest (2,625 cafés)
+and is restored on first boot if no database exists yet.
+
+Two things to know about the free tier:
+
+- **It sleeps after ~15 minutes idle**, so the first request after that takes ~30–50s to wake.
+- **Disk is ephemeral.** Anything scraped from the live site vanishes on the next restart
+  and it falls back to the seed. Fine for a demo — for anything real, move to Postgres,
+  which is the v1.2 plan in [the architecture doc](docs/architecture.md).
+
+Any host that injects `PORT` works the same way; the start command is `python serve.py`.
+
 **Categories:** cafe, restaurant, plumber, electrician, hairdresser, gym, dentist, bakery, childcare, veterinary
 **Areas:** sydney, melbourne, brisbane, perth, adelaide
 

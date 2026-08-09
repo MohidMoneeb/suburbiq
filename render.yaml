@@ -1,0 +1,16 @@
+# Render blueprint — deploys SuburbIQ as a public web service.
+# In Render: New > Blueprint > pick this repo. Everything below is applied for you.
+services:
+  - type: web
+    name: suburbiq
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python serve.py
+    healthCheckPath: /health
+    envVars:
+      # Hosting platforms require binding all interfaces, not loopback.
+      - key: HOST
+        value: 0.0.0.0
+      - key: PYTHON_VERSION
+        value: "3.11.9"
